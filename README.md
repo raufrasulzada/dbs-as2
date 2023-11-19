@@ -7,10 +7,10 @@ The workspace contains two folders by default, where:
 
 Meanwhile, the compiled output files will be generated in the `bin` folder by default.
 
-## How to Run Properly
+## How to Establish Connection
 
-To utilize the code properly, you should add the correct database name, alter the userName variable to your own username, and alter the password to your own password.
+To establish connection to your database, you should add the correct database name, alter the userName variable to your own username, and alter the password to your own password.
 
-## How to Query
+## How to implement CRUD operations
 
-To query, simply insert the query lines into insertQuery string. Whatever you query will be executed when the code runs.
+To implement CRUD operations, you can utilize the methods I defined including insertAuthorInfo(), insertCustomerInfo(), removeRecord(), etc.
