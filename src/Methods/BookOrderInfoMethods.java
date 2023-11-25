@@ -1,7 +1,7 @@
 package Methods;
 import Connection.abstractConnection;
-import AccessObjects.AccessAuthorInfo;
-import Entity.AuthorInfo;
+import AccessObjects.AccessBookOrderInfo;
+import Entity.BookOrderInfo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,17 +10,17 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AuthorInfoMethods extends abstractConnection implements AccessAuthorInfo {
+public abstract class BookOrderInfoMethods extends abstractConnection implements AccessBookOrderInfo {
 
     @Override
-    public boolean createAuthorInfo(AuthorInfo author) {
+    public boolean createBookOrderInfo(BookOrderInfo bookOrder) {
         try (Connection connection = establishConnection()) {
-            String query = "INSERT INTO AuthorInfo (AuthorID, AuthorName) VALUES (?,?)";
+            String query = "INSERT INTO BookOrderInfo (OrderID, BookID) VALUES (?,?)";
             System.out.println("Query statement: " + query);
 
             try (PreparedStatement pStatement = connection.prepareStatement(query)) {
-                pStatement.setInt(1, author.getAuthorID());
-                pStatement.setString(2, author.getAuthorName());
+                pStatement.setInt(1, bookOrder.getOrderID());
+                pStatement.setInt(2, bookOrder.getBookID());
                 int rowsAffected = pStatement.executeUpdate();
                 return rowsAffected > 0;
             }
@@ -36,16 +36,16 @@ public abstract class AuthorInfoMethods extends abstractConnection implements Ac
     }
 
     @Override
-    public List<AuthorInfo> getAllAuthors() {
-        List<AuthorInfo> authors = new ArrayList<>();
+    public List<BookOrderInfo> getAllBookOrders() {
+        List<BookOrderInfo> bookOrders = new ArrayList<>();
         try (Connection connection = establishConnection()) {
             try (Statement pStatement = connection.createStatement()) {
-                pStatement.execute("SELECT * FROM AuthorInfo");
+                pStatement.execute("SELECT * FROM BookOrderInfo");
                 ResultSet result = pStatement.getResultSet();
                 while (result.next()) {
-                    int AuthorID = result.getInt("AuthorID");
-                    String AuthorName = result.getString("AuthorName");
-                    authors.add(new AuthorInfo(AuthorID, AuthorName));
+                    int OrderID = result.getInt("OrderID");
+                    int BookID = result.getInt("BookID");
+                    bookOrders.add(new BookOrderInfo(OrderID, BookID));
                 }
             }
         } catch (SQLException e) {
@@ -55,15 +55,18 @@ public abstract class AuthorInfoMethods extends abstractConnection implements Ac
             e.printStackTrace();
             System.out.println("Error: " + e.getMessage());
         }
-        return authors;
+        return bookOrders;
     }
 
     @Override
-    public boolean updateAuthorInfo(AuthorInfo author) {
+    public boolean deleteBookOrderInfo(int OrderID, int BookID) {
         try (Connection connection = establishConnection()) {
-            try (PreparedStatement pStatement = connection.prepareStatement("UPDATE AuthorInfo SET AuthorName=? WHERE AuthorID=?")) {
-                pStatement.setString(1, author.getAuthorName());
-                pStatement.setInt(2, author.getAuthorID());
+            String query = "DELETE FROM BookOrderInfo WHERE OrderID = ? AND BookID = ?";
+            System.out.println("Query statement: " + query);
+
+            try (PreparedStatement pStatement = connection.prepareStatement(query)) {
+                pStatement.setInt(1, OrderID);
+                pStatement.setInt(2, BookID);
                 int rowsAffected = pStatement.executeUpdate();
                 return rowsAffected > 0;
             }
@@ -79,34 +82,18 @@ public abstract class AuthorInfoMethods extends abstractConnection implements Ac
     }
 
     @Override
-    public boolean deleteAuthorInfo(int AuthorID) {
+    public BookOrderInfo getBookOrderByOrderID(int OrderID) {
+        BookOrderInfo bookOrder = null;
         try (Connection connection = establishConnection()) {
-            try (Statement pStatement = connection.createStatement()) {
-                pStatement.execute("DELETE FROM AuthorInfo WHERE AuthorID = " + AuthorID);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("SQL Exception: " + e.getMessage());
-            return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error: " + e.getMessage());
-            return false;
-        }
-        return true;
-    }
+            String query = "SELECT * FROM BookOrderInfo WHERE OrderID = ?";
+            System.out.println("Query statement: " + query);
 
-    @Override
-    public AuthorInfo getAuthorById(int ID) {
-        AuthorInfo author = null;
-        try (Connection connection = establishConnection()) {
-            try (Statement pStatement = connection.createStatement()) {
-                pStatement.execute("SELECT * FROM AuthorInfo WHERE AuthorID = " + ID);
-                ResultSet result = pStatement.getResultSet();
-                while (result.next()) {
-                    int AuthorID = result.getInt("AuthorID");
-                    String AuthorName = result.getString("AuthorName");
-                    author = new AuthorInfo(AuthorID, AuthorName);
+            try (PreparedStatement pStatement = connection.prepareStatement(query)) {
+                pStatement.setInt(1, OrderID);
+                ResultSet result = pStatement.executeQuery();
+                if (result.next()) {
+                    int BookID = result.getInt("BookID");
+                    bookOrder = new BookOrderInfo(OrderID, BookID);
                 }
             }
         } catch (SQLException e) {
@@ -116,6 +103,6 @@ public abstract class AuthorInfoMethods extends abstractConnection implements Ac
             e.printStackTrace();
             System.out.println("Error: " + e.getMessage());
         }
-        return author;
+        return bookOrder;
     }
 }

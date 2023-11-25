@@ -1,12 +1,33 @@
 import java.util.List;
+
 import Entity.AuthorInfo;
 import Methods.AuthorInfoMethods;
+import Entity.CustomerInfo;
+import Methods.CustomerInfoMethods;
+
+import Entity.Book;
+import Methods.BookMethods;
+import Entity.OrderInfo;
+import MetaData.MetaData;
+import Methods.OrderInfoMethods;
+
+import Entity.BookOrderInfo;
+import Methods.BookOrderInfoMethods;
+
+import Entity.BookAuthorInfo;
+import Methods.BookAuthorInfoMethods;
 
 public class Main {
 
     public static void main(String[] args) {
-        // Create an instance of AuthorInfoMethods
+        // Create the instances
         AuthorInfoMethods authorInfoMethods = new AuthorInfoMethods() {};
+        CustomerInfoMethods customerInfoMethods = new CustomerInfoMethods() {};
+        BookMethods bookMethods = new BookMethods() {};
+        OrderInfoMethods orderInfoMethods = new OrderInfoMethods() {};
+        BookOrderInfoMethods bookOrderInfoMethods = new BookOrderInfoMethods() {};
+        BookAuthorInfoMethods bookAuthorInfoMethods = new BookAuthorInfoMethods() {};
+
 
         // Implement the createAuthorInfo method
         // AuthorInfo AuthorToAdd = new AuthorInfo(1, "John Doe");
@@ -31,5 +52,17 @@ public class Main {
         // int AuthorIdToRetrieve = 1;
         // AuthorInfo RetrievedAuthor = authorInfoMethods.getAuthorById(AuthorIdToRetrieve);
         // System.out.println("Retrieved author: " + RetrievedAuthor);
+
+        // Display table names and columns
+        // MetaData.displayTableNamesAndColumns();
+
+        // Display column details
+        // MetaData.displayColumnDetails();
+  
+        // Display primary keys
+        // MetaData.displayPrimaryKeys();
+  
+        // Display foreign keys
+        // MetaData.displayForeignKeys();
     }
 }

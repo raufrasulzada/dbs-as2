@@ -4,17 +4,15 @@ public class OrderInfo extends CustomerInfo{
     private int OrderID;
     private int CustomerID;
     private int PlacedOrders;
-    private double TotalPrice;
 
     public OrderInfo() {
       
     }
 
-    public OrderInfo(int OrderID, int CustomerID, int PlacedOrders, double TotalPrice) {
+    public OrderInfo(int OrderID, int CustomerID, int PlacedOrders) {
         this.OrderID = OrderID;
         this.CustomerID = CustomerID;
         this.PlacedOrders = PlacedOrders;
-        this.TotalPrice = TotalPrice;
     }
 
     public int getOrderID() {
@@ -41,20 +39,11 @@ public class OrderInfo extends CustomerInfo{
         this.PlacedOrders = PlacedOrders;
     }
 
-    public double getTotalPrice() {
-        return TotalPrice;
-    }
-
-    public void setTotalPrice(double TotalPrice) {
-        this.TotalPrice = TotalPrice;
-    }
-
     public String toString() {
         return "OrderInfo{" +
                 "OrderID=" + OrderID +
                 ", CustomerID=" + CustomerID +
                 ", placedOrders=" + PlacedOrders +
-                ", totalPrice=" + TotalPrice +
                 '}';
     }
 }

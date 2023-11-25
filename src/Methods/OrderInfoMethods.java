@@ -1,7 +1,7 @@
 package Methods;
 import Connection.abstractConnection;
-import AccessObjects.AccessAuthorInfo;
-import Entity.AuthorInfo;
+import AccessObjects.AccessOrderInfo;
+import Entity.OrderInfo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,17 +10,18 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AuthorInfoMethods extends abstractConnection implements AccessAuthorInfo {
+public abstract class OrderInfoMethods extends abstractConnection implements AccessOrderInfo {
 
     @Override
-    public boolean createAuthorInfo(AuthorInfo author) {
+    public boolean createOrderInfo(OrderInfo order) {
         try (Connection connection = establishConnection()) {
-            String query = "INSERT INTO AuthorInfo (AuthorID, AuthorName) VALUES (?,?)";
+            String query = "INSERT INTO OrderInfo (OrderID, CustomerID, PlacedOrders) VALUES (?,?,?)";
             System.out.println("Query statement: " + query);
 
             try (PreparedStatement pStatement = connection.prepareStatement(query)) {
-                pStatement.setInt(1, author.getAuthorID());
-                pStatement.setString(2, author.getAuthorName());
+                pStatement.setInt(1, order.getOrderID());
+                pStatement.setInt(2, order.getCustomerID());
+                pStatement.setInt(3, order.getPlacedOrders());
                 int rowsAffected = pStatement.executeUpdate();
                 return rowsAffected > 0;
             }
@@ -36,16 +37,17 @@ public abstract class AuthorInfoMethods extends abstractConnection implements Ac
     }
 
     @Override
-    public List<AuthorInfo> getAllAuthors() {
-        List<AuthorInfo> authors = new ArrayList<>();
+    public List<OrderInfo> getAllOrders() {
+        List<OrderInfo> orders = new ArrayList<>();
         try (Connection connection = establishConnection()) {
             try (Statement pStatement = connection.createStatement()) {
-                pStatement.execute("SELECT * FROM AuthorInfo");
+                pStatement.execute("SELECT * FROM OrderInfo");
                 ResultSet result = pStatement.getResultSet();
                 while (result.next()) {
-                    int AuthorID = result.getInt("AuthorID");
-                    String AuthorName = result.getString("AuthorName");
-                    authors.add(new AuthorInfo(AuthorID, AuthorName));
+                    int OrderID = result.getInt("OrderID");
+                    int CustomerID = result.getInt("CustomerID");
+                    int PlacedOrders = result.getInt("PlacedOrders");
+                    orders.add(new OrderInfo(OrderID, CustomerID, PlacedOrders));
                 }
             }
         } catch (SQLException e) {
@@ -55,15 +57,16 @@ public abstract class AuthorInfoMethods extends abstractConnection implements Ac
             e.printStackTrace();
             System.out.println("Error: " + e.getMessage());
         }
-        return authors;
+        return orders;
     }
 
     @Override
-    public boolean updateAuthorInfo(AuthorInfo author) {
+    public boolean updateOrderInfo(OrderInfo order) {
         try (Connection connection = establishConnection()) {
-            try (PreparedStatement pStatement = connection.prepareStatement("UPDATE AuthorInfo SET AuthorName=? WHERE AuthorID=?")) {
-                pStatement.setString(1, author.getAuthorName());
-                pStatement.setInt(2, author.getAuthorID());
+            try (PreparedStatement pStatement = connection.prepareStatement("UPDATE OrderInfo SET CustomerID=?, PlacedOrders=? WHERE OrderID=?")) {
+                pStatement.setInt(1, order.getCustomerID());
+                pStatement.setInt(2, order.getPlacedOrders());
+                pStatement.setInt(3, order.getOrderID());
                 int rowsAffected = pStatement.executeUpdate();
                 return rowsAffected > 0;
             }
@@ -79,10 +82,10 @@ public abstract class AuthorInfoMethods extends abstractConnection implements Ac
     }
 
     @Override
-    public boolean deleteAuthorInfo(int AuthorID) {
+    public boolean deleteOrderInfo(int OrderID) {
         try (Connection connection = establishConnection()) {
             try (Statement pStatement = connection.createStatement()) {
-                pStatement.execute("DELETE FROM AuthorInfo WHERE AuthorID = " + AuthorID);
+                pStatement.execute("DELETE FROM OrderInfo WHERE OrderID = " + OrderID);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -97,16 +100,17 @@ public abstract class AuthorInfoMethods extends abstractConnection implements Ac
     }
 
     @Override
-    public AuthorInfo getAuthorById(int ID) {
-        AuthorInfo author = null;
+    public OrderInfo getOrderById(int ID) {
+        OrderInfo order = null;
         try (Connection connection = establishConnection()) {
             try (Statement pStatement = connection.createStatement()) {
-                pStatement.execute("SELECT * FROM AuthorInfo WHERE AuthorID = " + ID);
+                pStatement.execute("SELECT * FROM OrderInfo WHERE OrderID = " + ID);
                 ResultSet result = pStatement.getResultSet();
                 while (result.next()) {
-                    int AuthorID = result.getInt("AuthorID");
-                    String AuthorName = result.getString("AuthorName");
-                    author = new AuthorInfo(AuthorID, AuthorName);
+                    int OrderID = result.getInt("OrderID");
+                    int CustomerID = result.getInt("CustomerID");
+                    int PlacedOrders = result.getInt("PlacedOrders");
+                    order = new OrderInfo(OrderID, CustomerID, PlacedOrders);
                 }
             }
         } catch (SQLException e) {
@@ -116,6 +120,6 @@ public abstract class AuthorInfoMethods extends abstractConnection implements Ac
             e.printStackTrace();
             System.out.println("Error: " + e.getMessage());
         }
-        return author;
+        return order;
     }
 }
