@@ -1,30 +1,41 @@
 package Entity;
 
-public class Book extends AuthorInfo{
+public class Book {
     private int BookID;
     private String Title;
-    private int AuthorID;
     private String Edition;
     private String Publisher;
     private int Pages;
     private int Year;
     private double Price;
     private int BooksLeft;
+    private AuthorInfo author;
 
     public Book() {
       
     }
 
-    public Book(int BookID, String Title, int AuthorID, String Edition, String Publisher, int Pages, int Year, double Price, int BooksLeft) {
+    public Book(int BookID, String Title, String Edition, String Publisher, int Pages, int Year, double Price, int BooksLeft) {
         this.BookID = BookID;
         this.Title = Title;
-        this.AuthorID = AuthorID;
         this.Edition = Edition;
         this.Publisher = Publisher;
         this.Pages = Pages;
         this.Year = Year;
         this.Price = Price;
         this.BooksLeft = BooksLeft;
+    }
+
+    public Book(int BookID, String Title, String Edition, String Publisher, int Pages, int Year, double Price, int BooksLeft, AuthorInfo author) {
+        this.BookID = BookID;
+        this.Title = Title;
+        this.Edition = Edition;
+        this.Publisher = Publisher;
+        this.Pages = Pages;
+        this.Year = Year;
+        this.Price = Price;
+        this.BooksLeft = BooksLeft;
+        this.author = author;
     }
 
     public int getBookID() {
@@ -41,14 +52,6 @@ public class Book extends AuthorInfo{
 
     public void setTitle(String Title) {
         this.Title = Title;
-    }
-
-    public int getAuthorID() {
-        return AuthorID;
-    }
-
-    public void setAuthorID(int AuthorID) {
-        this.AuthorID = AuthorID;
     }
 
     public String getEdition() {
@@ -99,12 +102,19 @@ public class Book extends AuthorInfo{
         this.BooksLeft = BooksLeft;
     }
 
+    public AuthorInfo getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(AuthorInfo author) {
+        this.author = author;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
                 "BookID='" + BookID + '\'' +
                 ", Title='" + Title + '\'' +
-                ", AuthorID=" + AuthorID +
                 ", Edition='" + Edition + '\'' +
                 ", Publisher='" + Publisher + '\'' +
                 ", Pages=" + Pages +

@@ -1,6 +1,6 @@
 package Entity;
 
-public class BookOrderInfo extends Book{
+public class BookOrderInfo {
     private int OrderID;
     private int BookID;
 
