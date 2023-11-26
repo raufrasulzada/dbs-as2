@@ -45,7 +45,8 @@ public abstract class BookOrderInfoMethods extends abstractConnection implements
                 while (result.next()) {
                     int OrderID = result.getInt("OrderID");
                     int BookID = result.getInt("BookID");
-                    bookOrders.add(new BookOrderInfo(OrderID, BookID));
+                    int PlacedOrders = result.getInt("PlacedOrders");
+                    bookOrders.add(new BookOrderInfo(OrderID, BookID, PlacedOrders));
                 }
             }
         } catch (SQLException e) {
@@ -93,7 +94,8 @@ public abstract class BookOrderInfoMethods extends abstractConnection implements
                 ResultSet result = pStatement.executeQuery();
                 if (result.next()) {
                     int BookID = result.getInt("BookID");
-                    bookOrder = new BookOrderInfo(OrderID, BookID);
+                    int PlacedOrders = result.getInt("PlacedOrders");
+                    bookOrder = new BookOrderInfo(OrderID, BookID, PlacedOrders);
                 }
             }
         } catch (SQLException e) {

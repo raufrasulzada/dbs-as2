@@ -15,13 +15,12 @@ public abstract class OrderInfoMethods extends abstractConnection implements Acc
     @Override
     public boolean createOrderInfo(OrderInfo order) {
         try (Connection connection = establishConnection()) {
-            String query = "INSERT INTO OrderInfo (OrderID, CustomerID, PlacedOrders) VALUES (?,?,?)";
+            String query = "INSERT INTO OrderInfo (OrderID, CustomerID) VALUES (?,?)";
             System.out.println("Query statement: " + query);
 
             try (PreparedStatement pStatement = connection.prepareStatement(query)) {
                 pStatement.setInt(1, order.getOrderID());
                 pStatement.setInt(2, order.getCustomerID());
-                pStatement.setInt(3, order.getPlacedOrders());
                 int rowsAffected = pStatement.executeUpdate();
                 return rowsAffected > 0;
             }
@@ -46,8 +45,7 @@ public abstract class OrderInfoMethods extends abstractConnection implements Acc
                 while (result.next()) {
                     int OrderID = result.getInt("OrderID");
                     int CustomerID = result.getInt("CustomerID");
-                    int PlacedOrders = result.getInt("PlacedOrders");
-                    orders.add(new OrderInfo(OrderID, CustomerID, PlacedOrders));
+                    orders.add(new OrderInfo(OrderID, CustomerID));
                 }
             }
         } catch (SQLException e) {
@@ -63,10 +61,9 @@ public abstract class OrderInfoMethods extends abstractConnection implements Acc
     @Override
     public boolean updateOrderInfo(OrderInfo order) {
         try (Connection connection = establishConnection()) {
-            try (PreparedStatement pStatement = connection.prepareStatement("UPDATE OrderInfo SET CustomerID=?, PlacedOrders=? WHERE OrderID=?")) {
+            try (PreparedStatement pStatement = connection.prepareStatement("UPDATE OrderInfo SET CustomerID=? WHERE OrderID=?")) {
                 pStatement.setInt(1, order.getCustomerID());
-                pStatement.setInt(2, order.getPlacedOrders());
-                pStatement.setInt(3, order.getOrderID());
+                pStatement.setInt(2, order.getOrderID());
                 int rowsAffected = pStatement.executeUpdate();
                 return rowsAffected > 0;
             }
@@ -109,8 +106,7 @@ public abstract class OrderInfoMethods extends abstractConnection implements Acc
                 while (result.next()) {
                     int OrderID = result.getInt("OrderID");
                     int CustomerID = result.getInt("CustomerID");
-                    int PlacedOrders = result.getInt("PlacedOrders");
-                    order = new OrderInfo(OrderID, CustomerID, PlacedOrders);
+                    order = new OrderInfo(OrderID, CustomerID);
                 }
             }
         } catch (SQLException e) {
