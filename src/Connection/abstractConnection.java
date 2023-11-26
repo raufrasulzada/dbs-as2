@@ -7,7 +7,7 @@ public abstract class abstractConnection {
     public static Connection establishConnection() {
         String url = "jdbc:postgresql://localhost/Assignment2";
         String userName = "postgres";
-        String password = "rauf1234";
+        String password = "";
         Connection establishConnection = null;
         try {
             establishConnection = DriverManager.getConnection(url, userName, password);
