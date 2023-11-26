@@ -15,12 +15,13 @@ public abstract class BookOrderInfoMethods extends abstractConnection implements
     @Override
     public boolean createBookOrderInfo(BookOrderInfo bookOrder) {
         try (Connection connection = establishConnection()) {
-            String query = "INSERT INTO BookOrderInfo (OrderID, BookID) VALUES (?,?)";
+            String query = "INSERT INTO BookOrderInfo (OrderID, BookID, PlacedOrders) VALUES (?,?, ?)";
             System.out.println("Query statement: " + query);
 
             try (PreparedStatement pStatement = connection.prepareStatement(query)) {
                 pStatement.setInt(1, bookOrder.getOrderID());
                 pStatement.setInt(2, bookOrder.getBookID());
+                pStatement.setInt(3, bookOrder.getPlacedOrders());
                 int rowsAffected = pStatement.executeUpdate();
                 return rowsAffected > 0;
             }

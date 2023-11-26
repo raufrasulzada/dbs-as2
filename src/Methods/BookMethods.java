@@ -1,8 +1,13 @@
 package Methods;
 import Connection.abstractConnection;
 import AccessObjects.AccessBook;
+import AccessObjects.AccessBookMoreDetailed;
 import Entity.AuthorInfo;
 import Entity.Book;
+import Entity.BookMoreDetailed;
+import Entity.BookOrderInfo;
+import Entity.OrderInfo;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,21 +16,32 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BookMethods extends abstractConnection implements AccessBook {
-    private Book getBook(ResultSet result) {
+public abstract class BookMethods extends abstractConnection implements AccessBook, AccessBookMoreDetailed {
+    private BookMoreDetailed getBookWithMoreDetails(ResultSet result) {
         try {
-        int BookID = result.getInt("BookID");
-        String title = result.getString("Title");
-        String edition = result.getString("Edition");
-        String publisher = result.getString("Publisher");
-        int pages = result.getInt("Pages");
-        int year = result.getInt("Year");
-        double price = result.getDouble("Price");
-        int booksLeft = result.getInt("BooksLeft");
-        String AuthorName = result.getString("AuthorName");
-        int AuthorID = result.getInt("AuthorID");
-        AuthorInfo author = new AuthorInfo(AuthorID, AuthorName);
-        return new Book(BookID, title, edition, publisher, pages, year, price, booksLeft, author);
+            int BookID = result.getInt("BookID");
+            String title = result.getString("Title");
+            String edition = result.getString("Edition");
+            String publisher = result.getString("Publisher");
+            int pages = result.getInt("Pages");
+            int year = result.getInt("Year");
+            double price = result.getDouble("Price");
+            int booksLeft = result.getInt("BooksLeft");
+    
+            // Extract AuthorInfo fields from ResultSet
+            int AuthorID = result.getInt("AuthorID");
+            String AuthorName = result.getString("AuthorName");
+            AuthorInfo author = (AuthorID != 0) ? new AuthorInfo(AuthorID, AuthorName) : null;
+    
+            int OrderID = result.getInt("OrderID");
+            int CustomerID = result.getInt("CustomerID");
+            int PlacedOrders = result.getInt("PlacedOrders");
+
+            OrderInfo order = new OrderInfo(OrderID, CustomerID);
+            BookOrderInfo bookorder = new BookOrderInfo(OrderID, BookID, PlacedOrders);
+
+            // Create and return Book object with AuthorInfo
+            return new BookMoreDetailed(BookID, title, edition, publisher, pages, year, price, booksLeft, author, order, bookorder);
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("SQL Exception: " + e.getMessage());
@@ -35,7 +51,7 @@ public abstract class BookMethods extends abstractConnection implements AccessBo
             System.out.println("Error: " + e.getMessage());
             return null;
         }
-    }
+    }    
 
     @Override
     public boolean createBook(Book book) {
@@ -44,14 +60,14 @@ public abstract class BookMethods extends abstractConnection implements AccessBo
             System.out.println("Query statement: " + query);
 
             try (PreparedStatement pStatement = connection.prepareStatement(query)) {
-                pStatement.setString(1, book.getTitle());
-                pStatement.setString(2, book.getEdition());
-                pStatement.setString(3, book.getPublisher());
-                pStatement.setInt(4, book.getPages());
-                pStatement.setInt(5, book.getYear());
-                pStatement.setDouble(6, book.getPrice());
-                pStatement.setInt(7, book.getBooksLeft());
-                pStatement.setInt(8, book.getBookID());
+                pStatement.setInt(1, book.getBookID());
+                pStatement.setString(2, book.getTitle());
+                pStatement.setString(3, book.getEdition());
+                pStatement.setString(4, book.getPublisher());
+                pStatement.setInt(5, book.getPages());
+                pStatement.setInt(6, book.getYear());
+                pStatement.setDouble(7, book.getPrice());
+                pStatement.setInt(8, book.getBooksLeft());
 
                 int rowsAffected = pStatement.executeUpdate();
                 return rowsAffected > 0;
@@ -176,15 +192,19 @@ public List<Book> getAllBooks() {
     }
 
     @Override
-    public List<Book> retrieveAllInformation() {
-        List<Book> books = new ArrayList<>();
+    public List<BookMoreDetailed> retrieveAllBookInfo() {
+        List<BookMoreDetailed> books = new ArrayList<>();
         try (Connection connection = establishConnection()) {
-            String query = "SELECT * FROM (((Book NATURAL JOIN BookAuthorInfo) JOIN AuthorInfo USING(AuthorID)) LEFT JOIN BookOrderInfo USING(BookID)) LEFT JOIN OrderInfo USING(OrderID)";
+            String query = "SELECT * FROM Book " +
+               "JOIN BookAuthorInfo USING (BookID) " +
+               "JOIN AuthorInfo USING (AuthorID) " +
+               "JOIN BookOrderInfo USING (BookID) " +
+               "JOIN OrderInfo USING (OrderID)";
             try (Statement pStatement = connection.createStatement()) {
                 pStatement.execute(query);
                 ResultSet result = pStatement.getResultSet();
                 while (result.next()) {
-                    Book book = getBook(result);
+                    BookMoreDetailed book = getBookWithMoreDetails(result);
                     books.add(book);
                 }
             }

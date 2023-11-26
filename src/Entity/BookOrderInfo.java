@@ -39,7 +39,7 @@ public class BookOrderInfo {
     public String toString() {
         return "BookOrderInfo{" +
                 "OrderID=" + OrderID +
-                ", BookID='" + BookID  +
+                ", BookID='" + BookID  + "\'" +
                 ", PlacedOrders=" + PlacedOrders +
                 '}';
     }

@@ -30,6 +30,6 @@ public class CustomerInfo {
   public String toString() {
     return "CustomerInfo{" +
                 "CustomerID=" + CustomerID +
-                ", CustomerName='" + CustomerName + '}';
+                ", CustomerName='" + CustomerName + "\'" + '}';
     }
   }

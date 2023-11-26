@@ -30,6 +30,6 @@ public class AuthorInfo {
   public String toString() {
     return "AuthorInfo{" +
                 "AuthorID=" + AuthorID +
-                ", AuthorName='" + AuthorName + '}';
+                ", AuthorName='" + AuthorName + "\'" + '}';
     }
   }

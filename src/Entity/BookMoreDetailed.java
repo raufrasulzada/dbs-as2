@@ -1,6 +1,6 @@
 package Entity;
 
-public class Book {
+public class BookMoreDetailed {
     private int BookID;
     private String Title;
     private String Edition;
@@ -13,34 +13,11 @@ public class Book {
     private OrderInfo order;
     private BookOrderInfo bookorder;
 
-    public Book() {
+    public BookMoreDetailed() {
       
     }
 
-    public Book(int BookID, String Title, String Edition, String Publisher, int Pages, int Year, double Price, int BooksLeft) {
-        this.BookID = BookID;
-        this.Title = Title;
-        this.Edition = Edition;
-        this.Publisher = Publisher;
-        this.Pages = Pages;
-        this.Year = Year;
-        this.Price = Price;
-        this.BooksLeft = BooksLeft;
-    }
-
-    public Book(int BookID, String Title, String Edition, String Publisher, int Pages, int Year, double Price, int BooksLeft, AuthorInfo author) {
-        this.BookID = BookID;
-        this.Title = Title;
-        this.Edition = Edition;
-        this.Publisher = Publisher;
-        this.Pages = Pages;
-        this.Year = Year;
-        this.Price = Price;
-        this.BooksLeft = BooksLeft;
-        this.author = author;
-    }
-
-    public Book(int BookID, String Title, String Edition, String Publisher, int Pages, int Year, double Price, int BooksLeft, AuthorInfo author, OrderInfo order, BookOrderInfo bookorder) {
+    public BookMoreDetailed(int BookID, String Title, String Edition, String Publisher, int Pages, int Year, double Price, int BooksLeft, AuthorInfo author, OrderInfo order, BookOrderInfo bookorder) {
         this.BookID = BookID;
         this.Title = Title;
         this.Edition = Edition;
@@ -153,6 +130,9 @@ public class Book {
                 ", Year=" + Year +
                 ", Price=" + Price +
                 ", BooksLeft=" + BooksLeft +
+                ", Author=" + author +
+                ", Order=" + order +
+                ", BookOrder=" + bookorder +
                 '}';
     }
 }

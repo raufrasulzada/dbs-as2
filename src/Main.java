@@ -15,6 +15,7 @@ import Entity.BookOrderInfo;
 import Methods.BookOrderInfoMethods;
 
 import Entity.BookAuthorInfo;
+import Entity.BookMoreDetailed;
 import Methods.BookAuthorInfoMethods;
 
 public class Main {
@@ -30,13 +31,14 @@ public class Main {
 
 
         // Implement the createAuthorInfo method
-        // AuthorInfo AuthorToAdd = new AuthorInfo(1, "John Doe");
-        // boolean creationResult = authorInfoMethods.createAuthorInfo(AuthorToAdd);
-        // System.out.println("Author creation result: " + creationResult);
+        // BookOrderInfo BookOrderInfoToAdd = new BookOrderInfo(4, 4, 2);
+        // boolean creationResult = bookOrderInfoMethods.createBookOrderInfo(BookOrderInfoToAdd);
+        // System.out.println("Book creation result: " + creationResult);
 
+        
         // // Implement the getAllAuthors method
-        // List<AuthorInfo> allAuthors = authorInfoMethods.getAllAuthors();
-        // System.out.println("All authors: " + allAuthors);
+        List<BookMoreDetailed> retrievedBook = bookMethods.retrieveAllBookInfo();
+        System.out.println("All info: " + retrievedBook);
 
         // Implement the updateAuthorInfo method
         // AuthorInfo AuthorToUpdate = new AuthorInfo(1, "Jane Doe");
