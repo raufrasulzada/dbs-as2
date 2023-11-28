@@ -57,6 +57,7 @@ public class MetaData extends abstractConnection {
         }
     }
 
+    
     public static void displayPrimaryKeys() {
         try (Connection connection = establishConnection()) {
             DatabaseMetaData dbMetadata = connection.getMetaData();

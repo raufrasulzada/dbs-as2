@@ -10,7 +10,6 @@ import Methods.BookMethods;
 import Entity.OrderInfo;
 import MetaData.MetaData;
 import Methods.OrderInfoMethods;
-
 import Entity.BookOrderInfo;
 import Methods.BookOrderInfoMethods;
 
@@ -29,12 +28,12 @@ public class Main {
         BookOrderInfoMethods bookOrderInfoMethods = new BookOrderInfoMethods() {};
         BookAuthorInfoMethods bookAuthorInfoMethods = new BookAuthorInfoMethods() {};
 
-
         // Implement the createAuthorInfo method
-        // BookOrderInfo BookOrderInfoToAdd = new BookOrderInfo(4, 4, 2);
-        // boolean creationResult = bookOrderInfoMethods.createBookOrderInfo(BookOrderInfoToAdd);
+        // BookOrderInfo orderInfoAdd = new BookOrderInfo(2, 3, 4);
+        // boolean creationResult = bookOrderInfoMethods.createBookOrderInfo(orderInfoAdd);
         // System.out.println("Book creation result: " + creationResult);
-
+        
+        
         
         // // Implement the getAllAuthors method
         List<BookMoreDetailed> retrievedBook = bookMethods.retrieveAllBookInfo();
@@ -46,9 +45,10 @@ public class Main {
         // System.out.println("Author update result: " + updateResult);
 
         // Implement the deleteAuthorInfo method
-        // int SelectedAuthorID = 1;
-        // boolean deletionResult = authorInfoMethods.deleteAuthorInfo(SelectedAuthorID);
-        // System.out.println("Author deletion result: " + deletionResult);
+        // int OrderID = 2;
+        // // int BookID = 3;
+        // boolean deletionResult = orderInfoMethods.deleteOrderInfo(OrderID);
+        // System.out.println("Deletion result: " + deletionResult);
 
         // Implement the getAuthorById method
         // int AuthorIdToRetrieve = 1;

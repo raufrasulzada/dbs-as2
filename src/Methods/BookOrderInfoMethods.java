@@ -1,6 +1,7 @@
 package Methods;
 import Connection.abstractConnection;
 import AccessObjects.AccessBookOrderInfo;
+import Entity.Book;
 import Entity.BookOrderInfo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,28 +14,54 @@ import java.util.List;
 public abstract class BookOrderInfoMethods extends abstractConnection implements AccessBookOrderInfo {
 
     @Override
-    public boolean createBookOrderInfo(BookOrderInfo bookOrder) {
-        try (Connection connection = establishConnection()) {
-            String query = "INSERT INTO BookOrderInfo (OrderID, BookID, PlacedOrders) VALUES (?,?, ?)";
-            System.out.println("Query statement: " + query);
+public boolean createBookOrderInfo(BookOrderInfo bookOrder) {
+    try (Connection connection = establishConnection();
+         PreparedStatement selectBookStatement = connection.prepareStatement("SELECT BooksLeft FROM Book WHERE BookID = ?");
+         PreparedStatement insertOrderStatement = connection.prepareStatement("INSERT INTO BookOrderInfo (OrderID, BookID, PlacedOrders) VALUES (?, ?, ?)");
+         PreparedStatement updateBookStatement = connection.prepareStatement("UPDATE Book SET BooksLeft = ? WHERE BookID = ?")) {
 
-            try (PreparedStatement pStatement = connection.prepareStatement(query)) {
-                pStatement.setInt(1, bookOrder.getOrderID());
-                pStatement.setInt(2, bookOrder.getBookID());
-                pStatement.setInt(3, bookOrder.getPlacedOrders());
-                int rowsAffected = pStatement.executeUpdate();
-                return rowsAffected > 0;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("SQL Exception: " + e.getMessage());
-            return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error: " + e.getMessage());
+        connection.setAutoCommit(false);
+
+        int orderId = bookOrder.getOrderID();
+        int bookId = bookOrder.getBookID();
+        int placedOrders = bookOrder.getPlacedOrders();
+
+        selectBookStatement.setInt(1, bookId);
+        ResultSet bookResult = selectBookStatement.executeQuery();
+        int booksLeft = 0;
+
+        if (bookResult.next()) {
+            booksLeft = bookResult.getInt("BooksLeft");
+        }
+
+        if (booksLeft >= placedOrders) {
+            insertOrderStatement.setInt(1, orderId);
+            insertOrderStatement.setInt(2, bookId);
+            insertOrderStatement.setInt(3, placedOrders);
+            insertOrderStatement.executeUpdate();
+
+            int updatedBooksLeft = booksLeft - placedOrders;
+            updateBookStatement.setInt(1, updatedBooksLeft);
+            updateBookStatement.setInt(2, bookId);
+            updateBookStatement.executeUpdate();
+            connection.commit();
+            return true;
+        } else {
+            connection.rollback();
+            System.out.println("Not enough books.");
             return false;
         }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        System.out.println("SQL Exception: " + e.getMessage());
+        return false;
+    } catch (Exception e) {
+        e.printStackTrace();
+        System.out.println("Error: " + e.getMessage());
+        return false;
     }
+}
+       
 
     @Override
     public List<BookOrderInfo> getAllBookOrders() {

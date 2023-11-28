@@ -195,11 +195,7 @@ public List<Book> getAllBooks() {
     public List<BookMoreDetailed> retrieveAllBookInfo() {
         List<BookMoreDetailed> books = new ArrayList<>();
         try (Connection connection = establishConnection()) {
-            String query = "SELECT * FROM Book " +
-               "JOIN BookAuthorInfo USING (BookID) " +
-               "JOIN AuthorInfo USING (AuthorID) " +
-               "JOIN BookOrderInfo USING (BookID) " +
-               "JOIN OrderInfo USING (OrderID)";
+            String query = "SELECT * FROM Book JOIN BookAuthorInfo USING (BookID) JOIN AuthorInfo USING (AuthorID) JOIN BookOrderInfo USING (BookID) JOIN OrderInfo USING (OrderID)";
             try (Statement pStatement = connection.createStatement()) {
                 pStatement.execute(query);
                 ResultSet result = pStatement.getResultSet();
