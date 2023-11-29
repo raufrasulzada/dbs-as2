@@ -29,9 +29,9 @@ public class Main {
         BookAuthorInfoMethods bookAuthorInfoMethods = new BookAuthorInfoMethods() {};
 
         // Implement the createAuthorInfo method
-        // BookOrderInfo orderInfoAdd = new BookOrderInfo(2, 3, 4);
+        // BookOrderInfo orderInfoAdd = new BookOrderInfo(4, 1, 1);
         // boolean creationResult = bookOrderInfoMethods.createBookOrderInfo(orderInfoAdd);
-        // System.out.println("Book creation result: " + creationResult);
+        // System.out.println("Creation result: " + creationResult);
         
         
         
@@ -40,20 +40,20 @@ public class Main {
         System.out.println("All info: " + retrievedBook);
 
         // Implement the updateAuthorInfo method
-        // AuthorInfo AuthorToUpdate = new AuthorInfo(1, "Jane Doe");
-        // boolean updateResult = authorInfoMethods.updateAuthorInfo(AuthorToUpdate);
-        // System.out.println("Author update result: " + updateResult);
+        // BookOrderInfo bookInf = new BookOrderInfo(3, 2, 5);
+        // boolean updateResult = bookOrderInfoMethods.createBookOrderInfo(bookInf);
+        // System.out.println("Update result: " + updateResult);
 
         // Implement the deleteAuthorInfo method
-        // int OrderID = 2;
-        // // int BookID = 3;
-        // boolean deletionResult = orderInfoMethods.deleteOrderInfo(OrderID);
+        // int OrderID = 4;
+        // int BookID = 1;
+        // boolean deletionResult = bookOrderInfoMethods.deleteBookOrderInfo(OrderID, BookID);
         // System.out.println("Deletion result: " + deletionResult);
 
         // Implement the getAuthorById method
         // int AuthorIdToRetrieve = 1;
         // AuthorInfo RetrievedAuthor = authorInfoMethods.getAuthorById(AuthorIdToRetrieve);
-        // System.out.println("Retrieved author: " + RetrievedAuthor);
+        // System.out.println("Retrieved: " + RetrievedAuthor);
 
         // Display table names and columns
         // MetaData.displayTableNamesAndColumns();

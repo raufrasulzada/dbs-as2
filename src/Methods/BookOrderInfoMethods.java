@@ -88,27 +88,69 @@ public boolean createBookOrderInfo(BookOrderInfo bookOrder) {
     }
 
     @Override
-    public boolean deleteBookOrderInfo(int OrderID, int BookID) {
-        try (Connection connection = establishConnection()) {
-            String query = "DELETE FROM BookOrderInfo WHERE OrderID = ? AND BookID = ?";
-            System.out.println("Query statement: " + query);
+public boolean deleteBookOrderInfo(int OrderID, int BookID) {
+    try (Connection connection = establishConnection()) {
+        // Retrieve placed orders before deletion
+        BookOrderInfo bookOrderBeforeDeletion = getBookOrderInfo(OrderID, BookID);
+        if (bookOrderBeforeDeletion == null) {
+            System.out.println("BookOrderInfo not found for OrderID: " + OrderID + " and BookID: " + BookID);
+            return false;
+        }
+        int placedOrders = bookOrderBeforeDeletion.getPlacedOrders();
+        String deleteQuery = "DELETE FROM BookOrderInfo WHERE OrderID = ? AND BookID = ?";
+        try (PreparedStatement pStatement = connection.prepareStatement(deleteQuery)) {
+            pStatement.setInt(1, OrderID);
+            pStatement.setInt(2, BookID);
+            int rowsAffected = pStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                // Update BooksLeft in the Books table
+                String updateBooksQuery = "UPDATE Book SET BooksLeft = BooksLeft + ? WHERE BookID = ?";
+                try (PreparedStatement updateBooksStatement = connection.prepareStatement(updateBooksQuery)) {
+                    updateBooksStatement.setInt(1, placedOrders);
+                    updateBooksStatement.setInt(2, BookID);
+                    updateBooksStatement.executeUpdate();
+                }
 
+                return true;
+            } else {
+                System.out.println("Deletion failed. No rows affected.");
+                return false;
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        System.out.println("SQL Exception: " + e.getMessage());
+        return false;
+    } catch (Exception e) {
+        e.printStackTrace();
+        System.out.println("Error: " + e.getMessage());
+        return false;
+    }
+}
+
+    public BookOrderInfo getBookOrderInfo(int OrderID, int BookID) {
+        try (Connection connection = establishConnection()) {
+            String query = "SELECT * FROM BookOrderInfo WHERE OrderID = ? AND BookID = ?";
             try (PreparedStatement pStatement = connection.prepareStatement(query)) {
                 pStatement.setInt(1, OrderID);
                 pStatement.setInt(2, BookID);
-                int rowsAffected = pStatement.executeUpdate();
-                return rowsAffected > 0;
+                ResultSet result = pStatement.executeQuery();
+                if (result.next()) {
+                    int PlacedOrders = result.getInt("PlacedOrders");
+                    return new BookOrderInfo(OrderID, BookID, PlacedOrders);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("SQL Exception: " + e.getMessage());
-            return false;
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error: " + e.getMessage());
-            return false;
         }
+        return null;
     }
+
+
 
     @Override
     public BookOrderInfo getBookOrderByOrderID(int OrderID) {
