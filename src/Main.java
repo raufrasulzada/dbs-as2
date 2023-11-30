@@ -35,14 +35,14 @@ public class Main {
         
         
         
-        // // Implement the getAllAuthors method
+        // // Implement the retrieveAllBookInfo method
         List<BookMoreDetailed> retrievedBook = bookMethods.retrieveAllBookInfo();
         System.out.println("All info: " + retrievedBook);
 
-        // Implement the updateAuthorInfo method
-        // BookOrderInfo bookInf = new BookOrderInfo(3, 2, 5);
-        // boolean updateResult = bookOrderInfoMethods.createBookOrderInfo(bookInf);
-        // System.out.println("Update result: " + updateResult);
+        // Implement the updateBookOrderInfo method
+        BookOrderInfo bookInf = new BookOrderInfo(3, 2, 5);
+        boolean updateResult = bookOrderInfoMethods.updateBookOrderInfo(bookInf);
+        System.out.println("Update result: " + updateResult);
 
         // Implement the deleteAuthorInfo method
         // int OrderID = 4;
