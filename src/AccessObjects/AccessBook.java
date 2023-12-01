@@ -7,6 +7,5 @@ public interface AccessBook {
     List<Book> getAllBooks();
     boolean updateBook(Book book);
     boolean deleteBook(int BookID);
-    Book getBookByID(int BookID);
     Book getBook(int BookID);
 }

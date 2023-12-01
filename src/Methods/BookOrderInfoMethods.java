@@ -87,7 +87,7 @@ public boolean createBookOrderInfo(BookOrderInfo bookOrder) {
         return bookOrders;
     }
 
-    // Since BookMethods is an abstract class, I could not directly instantiate it. That is why I created ConcreteBookMethods and then instantiate that concrete class
+    // Since BookMethods is an abstract class, I could not directly instantiate it. That is why I created ConcreteBookMethods and then instantiated that concrete class
     public class ConcreteBookMethods extends BookMethods {
     }
 
@@ -96,27 +96,28 @@ public boolean createBookOrderInfo(BookOrderInfo bookOrder) {
         try (Connection connection = establishConnection();
              PreparedStatement updateStatement = connection.prepareStatement("UPDATE BookOrderInfo SET PlacedOrders = ? WHERE OrderID = ? AND BookID = ?");
              PreparedStatement updateBooksLeftStatement = connection.prepareStatement("UPDATE Book SET BooksLeft = BooksLeft - ? WHERE BookID = ?")) {
-                // Retrieve the existing PlacedOrders for the book order
+    
+            // Retrieve the existing PlacedOrders for the book order
             int existingPlacedOrders = getBookOrderInfo(bookOrder.getOrderID(), bookOrder.getBookID()).getPlacedOrders();
     
             // Calculate the difference in PlacedOrders
             int ordersDifference = bookOrder.getPlacedOrders() - existingPlacedOrders;
+    
+            // Use ConcreteBookMethods to get BooksLeft
+            ConcreteBookMethods concreteBookMethods = new ConcreteBookMethods();
+            int currentBooksLeft = concreteBookMethods.getBook(bookOrder.getBookID()).getBooksLeft();
+    
+            // Check if updating will result in negative BooksLeft
+            if (currentBooksLeft - ordersDifference < 0) {
+                // If it will go below zero, throw an exception or handle the situation accordingly
+                throw new IllegalArgumentException("Updating will result in negative BooksLeft.");
+            }
     
             // Update PlacedOrders in BookOrderInfo
             updateStatement.setInt(1, bookOrder.getPlacedOrders());
             updateStatement.setInt(2, bookOrder.getOrderID());
             updateStatement.setInt(3, bookOrder.getBookID());
             int rowsAffected = updateStatement.executeUpdate();
-    
-            // Use ConcreteBookMethods to get BooksLeft
-            ConcreteBookMethods concreteBookMethods = new ConcreteBookMethods();
-            int updatedBooksLeft = concreteBookMethods.getBook(bookOrder.getBookID()).getBooksLeft() - ordersDifference;
-    
-            // Check if BooksLeft will go below zero
-            if (updatedBooksLeft < 0) {
-                // If it will go below zero, throw an exception or handle the situation accordingly
-                throw new IllegalArgumentException("Updating will result in negative BooksLeft.");
-            }
     
             // Update BooksLeft only if it won't go below zero
             updateBooksLeftStatement.setInt(1, ordersDifference);
@@ -134,7 +135,7 @@ public boolean createBookOrderInfo(BookOrderInfo bookOrder) {
             System.out.println("Error: " + e.getMessage());
             return false;
         }
-    }
+    }    
 
     @Override
 public boolean deleteBookOrderInfo(int OrderID, int BookID) {

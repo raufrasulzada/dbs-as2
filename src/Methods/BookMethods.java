@@ -160,36 +160,7 @@ public List<Book> getAllBooks() {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public Book getBookByID(int BookID) {
-        Book book = null;
-        try (Connection connection = establishConnection()) {
-            try (Statement pStatement = connection.createStatement()) {
-                pStatement.execute("SELECT * FROM Book WHERE BookID = " + BookID);
-                ResultSet result = pStatement.getResultSet();
-                while (result.next()) {
-                    int bookID = result.getInt("BookID");
-                    String title = result.getString("Title");
-                    String edition = result.getString("Edition");
-                    String publisher = result.getString("Publisher");
-                    int pages = result.getInt("Pages");
-                    int year = result.getInt("Year");
-                    double price = result.getDouble("Price");
-                    int booksLeft = result.getInt("BooksLeft");
-                    book = new Book(bookID, title, edition, publisher, pages, year, price, booksLeft);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("SQL Exception: " + e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error: " + e.getMessage());
-        }
-        return book;
-    }
+    }   
 
     @Override
     public Book getBook(int BookID) {

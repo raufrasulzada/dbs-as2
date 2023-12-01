@@ -29,30 +29,27 @@ public class Main {
         BookAuthorInfoMethods bookAuthorInfoMethods = new BookAuthorInfoMethods() {};
 
         // Implement the createAuthorInfo method
-        // BookOrderInfo orderInfoAdd = new BookOrderInfo(4, 1, 1);
-        // boolean creationResult = bookOrderInfoMethods.createBookOrderInfo(orderInfoAdd);
+        // BookOrderInfo orderInfo = new BookOrderInfo(5, 5, 10);
+        // boolean creationResult = bookOrderInfoMethods.createBookOrderInfo(orderInfo);
         // System.out.println("Creation result: " + creationResult);
         
-        
-        
-        // // Implement the retrieveAllBookInfo method
-        List<BookMoreDetailed> retrievedBook = bookMethods.retrieveAllBookInfo();
-        System.out.println("All info: " + retrievedBook);
+        // Implement the retrieveAllBookInfo method
+        // List<AuthorInfo> retrievedAuthor = authorInfoMethods.getAllAuthors();
+        // System.out.println("All info: " + retrievedAuthor);
 
-        // Implement the updateBookOrderInfo method
-        BookOrderInfo bookInf = new BookOrderInfo(3, 2, 5);
-        boolean updateResult = bookOrderInfoMethods.updateBookOrderInfo(bookInf);
-        System.out.println("Update result: " + updateResult);
+        // Implement the update method
+        // BookOrderInfo bookinf = new BookOrderInfo(3, 2, 8);
+        // boolean updateResult = bookOrderInfoMethods.updateBookOrderInfo(bookinf);
+        // System.out.println("Update result: " + updateResult);
 
-        // Implement the deleteAuthorInfo method
+        // Implement the delete method
         // int OrderID = 4;
-        // int BookID = 1;
-        // boolean deletionResult = bookOrderInfoMethods.deleteBookOrderInfo(OrderID, BookID);
+        // boolean deletionResult = orderInfoMethods.deleteOrderInfo(5);
         // System.out.println("Deletion result: " + deletionResult);
 
         // Implement the getAuthorById method
         // int AuthorIdToRetrieve = 1;
-        // AuthorInfo RetrievedAuthor = authorInfoMethods.getAuthorById(AuthorIdToRetrieve);
+        // AuthorInfo RetrievedAuthor = authorInfoMethods.getAuthorById(1);
         // System.out.println("Retrieved: " + RetrievedAuthor);
 
         // Display table names and columns
