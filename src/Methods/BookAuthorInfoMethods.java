@@ -108,7 +108,7 @@ public abstract class BookAuthorInfoMethods extends abstractConnection implement
                 while (result.next()) {
                     int BookID = result.getInt("BookID");
                     int AuthorID = result.getInt("AuthorID");
-                    bookauthorinf = new BookAuthorInfo(AuthorID, BookID);
+                    bookauthorinf = new BookAuthorInfo(BookID, AuthorID);
                 }
             }
         } catch (SQLException e) {

@@ -102,6 +102,7 @@ public class Main {
             case 1:
                 System.out.print("Enter AuthorID: ");
                 int AuthorID = sc.nextInt();
+                sc.nextLine();
                 System.out.print("Enter AuthorName: ");
                 String AuthorName = sc.nextLine();
                 authorInfoMethods.createAuthorInfo(new AuthorInfo(AuthorID, AuthorName));
@@ -121,6 +122,7 @@ public class Main {
                 System.out.println();
                 System.out.print("Enter the AuthorID to Update the Author Information: ");
                 int AuthorIDforUpdate = sc.nextInt();
+                sc.nextLine();
                 System.out.println();
                 AuthorInfo author = authorInfoMethods.getAuthorById(AuthorIDforUpdate);
                 if (author == null) {
@@ -175,6 +177,7 @@ public class Main {
             case 1:
                 System.out.print("Enter CustomerID: ");
                 int CustomerID = sc.nextInt();
+                sc.nextLine();
                 System.out.print("Enter CustomerName: ");
                 String CustomerName = sc.nextLine();
                 customerInfoMethods.createCustomerInfo(new CustomerInfo(CustomerID, CustomerName));
@@ -194,6 +197,7 @@ public class Main {
                 System.out.println();
                 System.out.print("Enter the CustomerID to Update the Customer Information: ");
                 int CustomerIDforUpdate = sc.nextInt();
+                sc.nextLine();
                 System.out.println();
                 CustomerInfo customer = customerInfoMethods.getCustomerById(CustomerIDforUpdate);
                 if (customer == null) {
@@ -213,6 +217,7 @@ public class Main {
                 case 4:
                     System.out.print("Enter the CustomerID to Delete the Customer: ");
                     int CustomerIDtoDelete = sc.nextInt();
+                    sc.nextLine();
                     System.out.println();
                     customerInfoMethods.deleteCustomerInfo(CustomerIDtoDelete);
                     System.out.println();
@@ -248,6 +253,7 @@ public class Main {
             case 1:
                 System.out.print("Enter BookID: ");
                 int BookID = sc.nextInt();
+                sc.nextLine();
                 System.out.print("Enter Title: ");
                 String Title = sc.nextLine();
                 System.out.println("Enter Edition: ");
@@ -279,6 +285,7 @@ public class Main {
                 System.out.println();
                 System.out.print("Enter the BookID to Update the Book Information: ");
                 int BookIDforUpdate = sc.nextInt();
+                sc.nextLine();
                 System.out.println();
                 Book book = bookMethods.getBook(BookIDforUpdate);
                 if (book == null) {
@@ -361,6 +368,7 @@ public class Main {
             case 1:
                 System.out.print("Enter OrderID: ");
                 int OrderID = sc.nextInt();
+                sc.nextLine();
                 System.out.print("Enter CustomerID: ");
                 int CustomerID = sc.nextInt();
                 orderInfoMethods.createOrderInfo(new OrderInfo(OrderID, CustomerID));
@@ -380,6 +388,7 @@ public class Main {
                 System.out.println();
                 System.out.print("Enter the OrderID to Update the CustomerID: ");
                 int OrderIDforUpdate = sc.nextInt();
+                sc.nextLine();
                 System.out.println();
                 OrderInfo order = orderInfoMethods.getOrderById(OrderIDforUpdate);
                 if (order == null) {
@@ -431,6 +440,7 @@ public class Main {
             case 1:
                 System.out.print("Enter OrderID: ");
                 int OrderID = sc.nextInt();
+                sc.nextLine();
                 System.out.print("Enter BookID: ");
                 int BookID = sc.nextInt();
                 System.out.println("Enter PlacedOrders: ");
@@ -452,6 +462,7 @@ public class Main {
                 System.out.println();
                 System.out.print("Enter the OrderID to Update the Book Order Information: ");
                 int OrderIDtoUpdate = sc.nextInt();
+                sc.nextLine();
                 System.out.println("Enter the BookID to Update the Book Order Information: ");
                 int BookIDtoUpdate = sc.nextInt();
                 BookOrderInfo order = bookOrderInfoMethods.getBookOrderInfo(OrderIDtoUpdate, BookIDtoUpdate);
@@ -514,6 +525,7 @@ public class Main {
             case 1:
                 System.out.print("Enter AuthorID: ");
                 int AuthorID = sc.nextInt();
+                sc.nextLine();
                 System.out.print("Enter BookID: ");
                 int BookID = sc.nextInt();
                 bookAuthorInfoMethods.createBookAuthorInfo(new BookAuthorInfo(AuthorID, BookID));
@@ -533,6 +545,7 @@ public class Main {
                 System.out.println();
                 System.out.print("Enter the BookID to Update the AuthorID: ");
                 int BookIDtoUpdate = sc.nextInt();
+                sc.nextLine();
                 System.out.println();
                 BookAuthorInfo bookauthorinf = bookAuthorInfoMethods.getBookAuthorInfoByBookID(BookIDtoUpdate);
                 if (bookauthorinf == null) {
