@@ -38,7 +38,7 @@ Meanwhile, the compiled output files will be generated in the `bin` folder by de
 
 ## Usage
 
-After setting up the application, you can use the provided methods to manage customers, book orders, book inventory, author information, etc.
+After setting up the application, you can simply run it and utilize the ease of command line interface to utilize the functions.
 
 ## Transaction Management
 

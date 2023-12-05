@@ -1,15 +1,15 @@
 package Entity;
 
 public class BookAuthorInfo {
-    private int AuthorID;
     private int BookID;
+    private int AuthorID;
 
     public BookAuthorInfo() {
     }
 
-    public BookAuthorInfo(int AuthorID, int BookID) {
-        this.AuthorID = AuthorID;
+    public BookAuthorInfo(int BookID, int AuthorID) {
         this.BookID = BookID;
+        this.AuthorID = AuthorID;
     }
 
     public int getAuthorID() {
@@ -31,8 +31,8 @@ public class BookAuthorInfo {
     @Override
     public String toString() {
         return "BookAuthorInfo{" +
-                "AuthorID=" + AuthorID +
-                ", BookID=" + BookID +
+                "BookID=" + BookID +
+                ", AuthorID=" + AuthorID +
                 '}';
     }
 }

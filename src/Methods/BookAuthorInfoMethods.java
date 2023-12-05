@@ -1,11 +1,13 @@
 package Methods;
 import Connection.abstractConnection;
 import AccessObjects.AccessBookAuthorInfo;
+import Entity.AuthorInfo;
 import Entity.BookAuthorInfo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,12 +16,12 @@ public abstract class BookAuthorInfoMethods extends abstractConnection implement
     @Override
     public boolean createBookAuthorInfo(BookAuthorInfo bookAuthorInfo) {
         try (Connection connection = establishConnection()) {
-            String query = "INSERT INTO BookAuthorInfo (AuthorID, BookID) VALUES (?, ?)";
+            String query = "INSERT INTO BookAuthorInfo (BookID, AuthorID) VALUES (?, ?)";
             System.out.println("Query statement: " + query);
 
             try (PreparedStatement pStatement = connection.prepareStatement(query)) {
-                pStatement.setInt(1, bookAuthorInfo.getAuthorID());
-                pStatement.setInt(2, bookAuthorInfo.getBookID());
+                pStatement.setInt(1, bookAuthorInfo.getBookID());
+                pStatement.setInt(2, bookAuthorInfo.getAuthorID());
                 int rowsAffected = pStatement.executeUpdate();
                 return rowsAffected > 0;
             }
@@ -41,9 +43,9 @@ public abstract class BookAuthorInfoMethods extends abstractConnection implement
             try (PreparedStatement pStatement = connection.prepareStatement("SELECT * FROM BookAuthorInfo")) {
                 ResultSet result = pStatement.executeQuery();
                 while (result.next()) {
-                    int AuthorID = result.getInt("AuthorID");
                     int BookID = result.getInt("BookID");
-                    bookAuthorInfos.add(new BookAuthorInfo(AuthorID, BookID));
+                    int AuthorID = result.getInt("AuthorID");
+                    bookAuthorInfos.add(new BookAuthorInfo(BookID, AuthorID));
                 }
             }
         } catch (SQLException e) {
@@ -59,9 +61,9 @@ public abstract class BookAuthorInfoMethods extends abstractConnection implement
     @Override
     public boolean updateBookAuthorInfo(BookAuthorInfo bookAuthorInfo) {
         try (Connection connection = establishConnection()) {
-            try (PreparedStatement pStatement = connection.prepareStatement("UPDATE BookAuthorInfo SET BookID=? WHERE AuthorID=?")) {
-                pStatement.setInt(1, bookAuthorInfo.getBookID());
-                pStatement.setInt(2, bookAuthorInfo.getAuthorID());
+            try (PreparedStatement pStatement = connection.prepareStatement("UPDATE BookAuthorInfo SET AuthorID=? WHERE BookID=?")) {
+                pStatement.setInt(1, bookAuthorInfo.getAuthorID());
+                pStatement.setInt(2, bookAuthorInfo.getBookID());
                 int rowsAffected = pStatement.executeUpdate();
                 return rowsAffected > 0;
             }
@@ -77,55 +79,36 @@ public abstract class BookAuthorInfoMethods extends abstractConnection implement
     }
 
     @Override
-    public boolean deleteBookAuthorInfo(int AuthorID, int BookID) {
+    public boolean deleteBookAuthorInfo(int BookID, int AuthorID) {
         try (Connection connection = establishConnection()) {
-            try (PreparedStatement pStatement = connection.prepareStatement("DELETE FROM BookAuthorInfo WHERE AuthorID = ? AND BookID = ?")) {
-                pStatement.setInt(1, AuthorID);
-                pStatement.setInt(2, BookID);
-                int rowsAffected = pStatement.executeUpdate();
-                return rowsAffected > 0;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("SQL Exception: " + e.getMessage());
-            return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error: " + e.getMessage());
-            return false;
-        }
-    }
-
-    @Override
-    public List<Integer> getBookIDsByAuthor(int AuthorID) {
-        List<Integer> bookIDs = new ArrayList<>();
-        try (Connection connection = establishConnection()) {
-            try (PreparedStatement pStatement = connection.prepareStatement("SELECT BookID FROM BookAuthorInfo WHERE AuthorID = ?")) {
-                pStatement.setInt(1, AuthorID);
-                ResultSet result = pStatement.executeQuery();
-                while (result.next()) {
-                    bookIDs.add(result.getInt("BookID"));
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("SQL Exception: " + e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error: " + e.getMessage());
-        }
-        return bookIDs;
-    }
-
-    @Override
-    public List<Integer> getAuthorIDsByBook(int BookID) {
-        List<Integer> authorIDs = new ArrayList<>();
-        try (Connection connection = establishConnection()) {
-            try (PreparedStatement pStatement = connection.prepareStatement("SELECT AuthorID FROM BookAuthorInfo WHERE BookID = ?")) {
+            try (PreparedStatement pStatement = connection.prepareStatement("DELETE FROM BookAuthorInfo WHERE BookID = ? AND AuthorID = ?")) {
                 pStatement.setInt(1, BookID);
-                ResultSet result = pStatement.executeQuery();
+                pStatement.setInt(2, AuthorID);
+                int rowsAffected = pStatement.executeUpdate();
+                return rowsAffected > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("SQL Exception: " + e.getMessage());
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        }
+    }
+ 
+    @Override
+    public BookAuthorInfo getBookAuthorInfoByBookID(int ID) {
+        BookAuthorInfo bookauthorinf = null;
+        try (Connection connection = establishConnection()) {
+            try (Statement pStatement = connection.createStatement()) {
+                pStatement.execute("SELECT * FROM BookAuthorInfo WHERE BookID = " + ID);
+                ResultSet result = pStatement.getResultSet();
                 while (result.next()) {
-                    authorIDs.add(result.getInt("AuthorID"));
+                    int BookID = result.getInt("BookID");
+                    int AuthorID = result.getInt("AuthorID");
+                    bookauthorinf = new BookAuthorInfo(AuthorID, BookID);
                 }
             }
         } catch (SQLException e) {
@@ -135,6 +118,6 @@ public abstract class BookAuthorInfoMethods extends abstractConnection implement
             e.printStackTrace();
             System.out.println("Error: " + e.getMessage());
         }
-        return authorIDs;
+        return bookauthorinf;
     }
 }

@@ -3,10 +3,9 @@ import java.util.List;
 import Entity.BookAuthorInfo;
 
 public interface AccessBookAuthorInfo {
-    boolean createBookAuthorInfo(BookAuthorInfo bookAuthorInfo);
-    List<BookAuthorInfo> getAllBookAuthorInfo();
-    boolean updateBookAuthorInfo(BookAuthorInfo bookAuthorInfo);
-    boolean deleteBookAuthorInfo(int AuthorID, int BookID);
-    List<Integer> getBookIDsByAuthor(int AuthorID);
-    List<Integer> getAuthorIDsByBook(int BookID);
+    public boolean createBookAuthorInfo(BookAuthorInfo bookAuthorInfo);
+    public List<BookAuthorInfo> getAllBookAuthorInfo();
+    public boolean updateBookAuthorInfo(BookAuthorInfo bookAuthorInfo);
+    public boolean deleteBookAuthorInfo(int BookID, int AuthorID);
+    public BookAuthorInfo getBookAuthorInfoByBookID(int BookID);
 }
